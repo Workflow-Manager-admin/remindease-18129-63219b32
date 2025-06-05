@@ -161,6 +161,15 @@ function App() {
 
   // Modal for add/edit
   function ReminderModal() {
+    // Use ref to focus the title field only when the modal opens
+    const titleInputRef = useRef(null);
+
+    useEffect(() => {
+      if (modalOpen && titleInputRef.current) {
+        titleInputRef.current.focus();
+      }
+    }, [modalOpen]);
+
     return (
       <div className="remind-modal-overlay">
         <div className="remind-modal" style={{ background: colors.secondary }}>
@@ -171,15 +180,17 @@ function App() {
             <label>
               Title<span style={{ color: colors.accent }}> *</span>
               <input
+                ref={titleInputRef}
                 name="title"
                 value={formState.title}
                 onChange={onFieldChange}
                 required
-                autoFocus
                 maxLength={64}
                 style={{ borderColor: colors.primary }}
                 type="text"
                 placeholder="e.g. Meeting, Doctor, Event"
+                spellCheck={false}
+                autoComplete="off"
               />
             </label>
             <label>
@@ -191,6 +202,8 @@ function App() {
                 maxLength={256}
                 placeholder="Brief details (optional)"
                 style={{ borderColor: colors.primary, resize: "vertical" }}
+                spellCheck={false}
+                autoComplete="off"
               />
             </label>
             <label>
@@ -203,6 +216,7 @@ function App() {
                 required
                 style={{ borderColor: colors.primary }}
                 min={new Date().toISOString().slice(0, 16)}
+                autoComplete="off"
               />
             </label>
             <div className="remind-modal-actions">
