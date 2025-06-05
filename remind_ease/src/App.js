@@ -60,11 +60,14 @@ function App() {
   };
 
   // Handle form field change
-  const onFieldChange = (e) =>
-    setFormState((s) => ({
-      ...s,
-      [e.target.name]: e.target.value,
+  // Only update the specific field to avoid re-binding issues and unnecessary flickers.
+  const onFieldChange = (e) => {
+    const { name, value } = e.target;
+    setFormState((prev) => ({
+      ...prev,
+      [name]: value
     }));
+  };
 
   // PUBLIC_INTERFACE
   function handleAddOrEdit(e) {
